@@ -1,0 +1,15 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "DeleteField",
+      "model": "Quote",
+      "field": "uploadedby"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "Quote",
+      "field": "userId"
+    }
+  ]
+}
