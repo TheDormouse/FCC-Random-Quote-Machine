@@ -1,113 +1,127 @@
-//import { PrismaClient } from '@prisma/client';
 import fetch from 'isomorphic-unfetch';
-export default (props) => {
+import styled from 'styled-components'
+import {motion, useAnimation} from 'framer-motion';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faQuoteLeft, } from '@fortawesome/free-solid-svg-icons'
+import {faTwitter} from '@fortawesome/free-brands-svg-icons'
+
+const Box = styled(motion.div)`
+margin: auto;
+margin-top: 5vh;
+padding: 20px 20px 20px 20px;
+background: white;
+border-radius: 30px;
+width: 10vw;
+min-height: 10vw;
+color: #333;
+text-align: left;
+font-size: 8vh;
+opacity: 0;
+`
+const Quote = styled(motion.div)`
+visibility: hidden;
+`
+const Icon = styled.span`
+font-size: 3vh;
+float: left;
+margin: 5px;
+`
+
+const Author = styled(motion.div)`
+visibility: hidden;
+text-align: right;
+font-size: 4vh;
+`
+const Buttons = styled(motion.div)`
+visibility: hidden;
+opacity: 0;
+`
+const Button = styled.a`
+border:none;
+border-radius:3px;
+color:#fff;
+background-color:#333;
+outline:none;
+font-size:2vh;
+padding: 8px 18px 6px 18px;
+margin-top:7vh;
+opacity:1;
+cursor:pointer;
+&:hover {
+  opacity:0.9;
+}
+&#tweet-quote {
+    float: left;
+}
+&#new-quote {
+    float: right;
+}
+`
+
+const Github = styled.a`
+position: absolute;
+bottom:5px;
+right: 5px;
+color: #fff;
+font-size: 1.5vh;
+`
+
+export default(props) => {
     const [quote, setQuote] = React.useState({})
+    const containerControls = useAnimation()
+    const quoteControls = useAnimation()
+    async function startAnimation (){
+        await containerControls.start({opacity: [0, 1], y: [100, 0], width: ['10vw', '10vw', '80vw'], fontSize: ['8vh', '8vh', '5vh']})
+        return await quoteControls.start({visibility: 'visible', opacity: [0, 1]})
+    }
     async function getNewQuote(event) {
-        if(event){
+        if (event) {
 
             event.preventDefault();
         }
-        setQuote({})
+        if(quote.text){
+            setQuote({})
+        }
         var res = await fetch('/api/random')
         var json = await res.json()
         console.log(json)
         setQuote(json[0])
     }
     React.useEffect(() => {
-        getNewQuote()
+        async function init(){
+            await getNewQuote()
+            return await startAnimation()
+        }
+        init()
     }, [])
-        return(
-            <div className='container'>
-                <style jsx global>{`
-                    body {
-                        background:
+
+    return (
+        <div>
+            <style jsx global>{`
+            body {
+                background:
                         linear-gradient(to right, rgba(0, 153, 255, 0.5), rgba(0, 153, 255, 0.5)),
-                        url('/desk.jpeg') no-repeat center center fixed; 
+                        url('https://source.unsplash.com/collection/261936') no-repeat center center fixed; 
                         -webkit-background-size: cover;
                         -moz-background-size: cover;
                         -o-background-size: cover;
                         background-size: cover;
-                    }
-                    .container{
-                        display: flex;
-                        flex-direction: column;
-                        align-items: center;
-                        justify-content: center;
-                    }
-                    .buttons {
-                        display: flex;
-                    }
-                    #quotebox {
-                        background-color: rgba(0, 153, 255, 0.8);
-                        border-radius: 27px;
-                        box-shadow: 20px 20px 37px 0px rgba(0, 0, 0, 0.25);
-                        width: 100%;
-                        padding: 10vh 10vw 10vh 10vw;
-                        margin: 10vh 10vw 10vh 10vw;
-                    }
-                    #text {
-                        padding: 10px;
-                        font-family: "Inknut Antiqua", serif;
-                        color: #ffffff;
-                        letter-spacing: 0px;
-                        line-height: 1.2;
-                        font-weight: 400;
-                        font-style: normal;
-                    }
-                    #author {
-                        font-family: "Inknut Antiqua", serif;
-                        color: #ffffff;
-                        letter-spacing: 0px;
-                        line-height: 1.2;
-                        font-weight: 400;
-                        font-style: normal;
-                        text-align: right;
-                    }
-                    .buttons a{
-                        overflow: visible;
-                        background-color: rgba(0, 153, 255, 0.8);
-                        border-radius: 20px;
-                        font-family: "Inknut Antiqua", serif;
-                        color: #ffffff;
-                        letter-spacing: 0px;
-                        line-height: 1.2;
-                        font-weight: 400;
-                        font-style: normal;
-                        padding: 10px;
-                        justify-content: center;
-                    }
-                    a {
-                        text-decoration: none;
-                        color: white;
-                    }
-                    .github {
-                        position: absolute;
-                        bottom:5px;
-                        right: 5px;
-                    }
-                `}</style>
-                <div id="quotebox">
-                    <h1 id="text">{quote.text ? quote.text : 'loading..'}</h1>
-                    <h2 id="author">{quote.author ? quote.author.name : ''}</h2>
-                    
-                </div>
-                    <div className='buttons'>
-                <a href={`https://twitter.com/intent/tweet?text=${quote.text ? quote.text + ' - ' + quote.author.name : null}&via=Mad_Marchy`} target='new'>Tweet quote</a>
-                <a id="new-quote" href="#" onClick={(event) => getNewQuote(event)}>New Quote</a>
-                </div>
-                <div className='github'><a href='https://github.com/TheDormouse/FCC-Random-Quote-Machine' target='new'>Github</a></div>
-            </div>)
+            }`}</style>
+                <Box id='quote-box' animate={containerControls}>
+                <Icon><FontAwesomeIcon icon={faQuoteLeft}/></Icon>
+                <Quote id='text' animate={quoteControls}>{quote.text ? quote.text : null}</Quote>
+                <Author id='author' animate={quoteControls}>{quote.author ? "- " + quote.author.name : null}</Author>
+                <Buttons animate={quoteControls}>
+
+                <Button id='tweet-quote' href={`https://twitter.com/intent/tweet?text=${quote.text ? quote.text + ' - ' + quote.author.name : null}&via=Mad_Marchy`} target='new'><FontAwesomeIcon icon={faTwitter} /></Button>
+                <Button id='new-quote' onClick={(event) => getNewQuote(event)}>New Quote</Button>
+                </Buttons>
+        </Box>
+        <script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js" />
+        <Github href='https://github.com/TheDormouse/FCC-Random-Quote-Machine' target='new'>Ben Martinez-Cain</Github>
+        </div>
+
+    )
 
 }
 
-/*export async function getServerSideProps(context) {
-    const prisma = new PrismaClient();
-    const quotes = await prisma.quote.findMany({})
-    const length = quotes.length
-    const random = Math.floor(Math.random() * Math.floor(length) + 1)
-    const quote = await prisma.quote.findOne({where: { id: parseInt(random)}, include: {author: true}})
-    await prisma.disconnect()
-    return {
-      props: {quote: JSON.stringify(quote)}, // will be passed to the page component as props
-    }
-  }*/
