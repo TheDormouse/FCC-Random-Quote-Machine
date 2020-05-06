@@ -7,6 +7,7 @@ Random Quote Machine for the [Free Code Camp](https://www.freecodecamp.org/learn
 - `npm run migrate`
 - `npm run dev`
 
+## User stories
 - User Story #1: I can see a wrapper element with a corresponding id="quote-box".
 
 - User Story #2: Within #quote-box, I can see an element with a corresponding id="text".
