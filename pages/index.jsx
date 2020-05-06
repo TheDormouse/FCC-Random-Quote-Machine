@@ -84,8 +84,7 @@ export default(props) => {
         }
         var res = await fetch('/api/random')
         var json = await res.json()
-        console.log(json)
-        setQuote(json[0])
+        setQuote(json)
     }
     React.useEffect(() => {
         async function init(){
