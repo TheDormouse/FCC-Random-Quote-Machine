@@ -95,7 +95,7 @@ export default (props) => {
                 <a href={`https://twitter.com/intent/tweet?text=${quote.text ? quote.text + ' - ' + quote.author.name : null}&via=Mad_Marchy`} target='new'>Tweet quote</a>
                 <a id="new-quote" href="#" onClick={(event) => getNewQuote(event)}>New Quote</a>
                 </div>
-                <div className='github'>Github</div>
+                <div className='github'><a href='https://github.com/TheDormouse/FCC-Random-Quote-Machine' target='new'>Github</a></div>
             </div>)
 
 }
