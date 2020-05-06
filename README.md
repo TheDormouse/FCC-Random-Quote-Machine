@@ -1,6 +1,11 @@
 # FCC-Random-Quote-Machine
 Random Quote Machine for the [Free Code Camp](https://www.freecodecamp.org/learn/front-end-libraries/front-end-libraries-projects/build-a-random-quote-machine)  frontend challenge. Added some additional features for SSR and api routes to add more quotes with prisma and postgresql.
 
+## Quickstart
+`npm i`
+`npm run migrate`
+`npm run dev`
+
 - User Story #1: I can see a wrapper element with a corresponding id="quote-box".
 
 - User Story #2: Within #quote-box, I can see an element with a corresponding id="text".
