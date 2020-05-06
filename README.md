@@ -2,6 +2,7 @@
 Random Quote Machine for the [Free Code Camp](https://www.freecodecamp.org/learn/front-end-libraries/front-end-libraries-projects/build-a-random-quote-machine)  frontend challenge. Added some additional features for SSR and api routes to add more quotes with prisma and postgresql.
 
 ## Quickstart
+Add your postgres connection string to `.env.example` and rename to `.env`
 `npm i`
 `npm run migrate`
 `npm run dev`
